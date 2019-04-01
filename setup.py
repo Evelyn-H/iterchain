@@ -6,7 +6,7 @@ setup(
     description='Iterator chaining for Python',
     long_description='',
     url='',
-    author='Evelyn H.',
+    author='Evelyn-H',
     author_email='hobert.evelyn@gmail.com',
     packages=[],
     classifiers=[
