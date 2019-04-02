@@ -9,9 +9,9 @@ setup(
     download_url='https://github.com/Evelyn-H/iterchain',
     author='Evelyn-H',
     author_email='hobert.evelyn@gmail.com',
-    packages=[],
+    packages=['iterchain'],
     classifiers=[
-      'Development Status :: 1 - Planning',
-      'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Development Status :: 3 - Alpha',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
     ],
 )
