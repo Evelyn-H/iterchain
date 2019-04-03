@@ -14,6 +14,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
+# import recommonmark
+# from recommonmark.transform import AutoStructify
+
 
 # -- Project information -----------------------------------------------------
 
@@ -30,7 +33,13 @@ author = 'Evelyn-H'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    # 'recommonmark',
+    'm2r',
 ]
+
+# source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -48,7 +57,39 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = 'alabaster'
 
+html_sidebars = {
+    '**': [
+        'about.html',
+        'localtoc.html',
+        # 'navigation.html',
+        'relations.html',
+        'searchbox.html',
+        'donate.html',
+    ]
+}
+
+html_theme_options = {
+    # 'logo': 'logo.png',
+    'github_user': 'Evelyn-H',
+    'github_repo': 'iterchain',
+    "github_banner": True,
+    "github_button": True,
+    "github_type": "star",
+    "description": "Simple and ergonomic iterator chaining for Python",
+    "fixed_sidebar": True,
+}
+
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+# def setup(app):
+#     app.add_config_value('recommonmark_config', {
+#             # 'url_resolver': lambda url: github_doc_root + url,
+#             'auto_toc_tree_section': 'Contents',
+#             'enable_eval_rst': True,
+#             }, True)
+#     app.add_transform(AutoStructify)

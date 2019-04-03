@@ -15,6 +15,9 @@ pytest = "*"
 pylint = "*"
 twine = "*"
 sphinx = "*"
+"m2r" = "*"
+recommonmark = "*"
+alabaster = "*"
 
 
 [requires]

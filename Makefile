@@ -7,7 +7,7 @@ install:
 
 dist:
 	make docs
-	python setup.py sdist
+	python setup.py sdist bdist_wheel
 
 publish:
 	make dist
