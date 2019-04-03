@@ -38,6 +38,8 @@ extensions = [
     'm2r',
 ]
 
+master_doc = 'index'
+
 # source_suffix = '.rst'
 source_suffix = ['.rst', '.md']
 
