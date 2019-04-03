@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/iterchain/badge/?version=latest)](https://iterchain.readthedocs.io/en/latest/?badge=latest)
+
 Iterchain: Iterator chaining for Python
 =======================================
 
