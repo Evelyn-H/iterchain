@@ -1,11 +1,22 @@
 Iterchain: Iterator chaining for Python
 =======================================
 
-Introduction
-------------
+Iterchain is a library intended to make manipulating iterators in Python easier and more ergonomic.
+The functionality is based on the standard Python [itertools](https://docs.python.org/3/library/itertools.html), and the [Rust iterator design](https://doc.rust-lang.org/std/iter/index.html).
 
-Example:
+
+
+Examples
+--------
+
+Standard python:
+```python
+>>> list(map(lambda x: x**2, [1, 2, 3]))
+[1, 4, 9]
 ```
+
+With `iterchain`:
+```python
 >>> import iterchain
 >>> iterchain([1, 2, 3]).map(lambda x: x**2).to_list()
 [1, 4, 9]
