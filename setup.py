@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='iterchain',
-    version='0.1.0',
+    version='0.1.1',
     description='Iterator chaining for Python',
     long_description=long_description,
     long_description_content_type="text/markdown",
