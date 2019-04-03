@@ -9,7 +9,7 @@ setup(
     description='Iterator chaining for Python',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/Evelyn-H/iterchain',
+    url='https://iterchain.readthedocs.io/en/stable/',
     download_url='https://github.com/Evelyn-H/iterchain',
     author='Evelyn-H',
     author_email='hobert.evelyn@gmail.com',
