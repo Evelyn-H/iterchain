@@ -18,7 +18,19 @@ API
 
 .. automodule:: iterchain
 
-.. autoclass:: iterchain.Iterchain
+
+Building new iterators
+----------------------
+
+.. automodule:: iterchain.generators
+    :members:
+
+|
+
+Chainable methods
+-----------------
+
+.. autoclass:: iterchain.Iterator
     :members:
     :undoc-members:
 

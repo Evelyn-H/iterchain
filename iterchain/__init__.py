@@ -10,20 +10,63 @@ instead of:
 ::
 
     >>> import iterchain
-    >>> iterchain.Iterchain([1, 2, 3]).map(lambda x: x**2)
+    >>> iterchain.Iterator([1, 2, 3]).map(lambda x: x**2)
 """
 
 
 import sys
 import types
-import typing
 
-class Iterchain:
+# # # to implement:
+
+# # generators
+# count / range
+# repeat
+# successors (rust)
+# cycle
+# zip / unzip
+# chain
+# next
+
+# # chainable
+# map
+# flat_map
+# flatten
+# filter
+# take
+# skip
+# enumerate
+# reversed
+# sorted
+# step_by
+# inspect
+
+# # consuming / non-chainable
+# reduce
+# all
+# any
+# min, max
+# sum
+# product
+# last
+# nth
+# for_each
+# to_list / collect
+# partition
+# find / position'
+
+
+# predefine to make the typechecker happy
+class Iterator:
+    pass
+
+
+class Iterator:
     """
     Wrapper class around python iterators
 
     After wrapping any iterable in this class it will have access to all the methods listed below.
-    These methods also return an `Iterchain` instance to make them chainable.
+    These methods also return an `Iterator` instance to make them chainable.
 
     ``<3``
     """
@@ -37,27 +80,30 @@ class Iterchain:
     def __iter__(self):
         return self.__iterator
 
-    def map(self, function) -> 'Iterchain':
+    def __next__(self):
+        return next(self.__iterator)
+
+    def map(self, function) -> Iterator:
         """
         Lazily applies a function to all elements.
 
         Args:
             function: the function to be called on each element
         """
-        return Iterchain(map(function, self))
+        return Iterator(map(function, self))
 
     def to_list(self) -> list:
         """
         Converts the Iterchain to a list
 
         Returns:
-            new list containing all the elements in this Iterchain
+            :obj:`list`: new list containing all the elements in this Iterchain
         """
         return list(self)
 
 
 # pylint: disable=too-few-public-methods
-class IterchainModule(types.ModuleType):
+class _IterchainModule(types.ModuleType):
     """
     Black magic to make the ``iterchain`` module callable.
     """
@@ -66,8 +112,13 @@ class IterchainModule(types.ModuleType):
         super().__init__(__name__)
         self.__dict__.update(sys.modules[__name__].__dict__)
 
+
     def __call__(self, iterable):
-        return Iterchain(iterable)
+        return Iterator(iterable)
 
 
-sys.modules[__name__] = IterchainModule()
+# import at the end to avoid cyclic imports
+from .generators import *
+
+# and change this module to our patched version
+sys.modules[__name__] = _IterchainModule()
