@@ -14,21 +14,23 @@
 |
 
 API
-===
+---
 
 .. automodule:: iterchain
 
+|
 
-Building new iterators
-----------------------
+Generators
+``````````
 
 .. automodule:: iterchain.generators
     :members:
 
-|
 
-Chainable methods
------------------
+Iterators
+``````````
+
+.. autofunction:: iterchain.chainable
 
 .. autoclass:: iterchain.Iterator
     :members:

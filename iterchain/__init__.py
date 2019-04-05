@@ -11,11 +11,41 @@ instead of:
 
     >>> import iterchain
     >>> iterchain.Iterator([1, 2, 3]).map(lambda x: x**2)
+
+|
+
+Overview
+````````
+
+**Generators**
+  - :meth:`generators.count`
+  - :meth:`generators.repeat`
+  - ...
+
+
+**Chainable operations**
+  - :meth:`Iterator.map`
+  - :meth:`Iterator.flat_map`
+  - :meth:`Iterator.filter`
+  - ...
+
+**Reduction operators**
+  - :meth:`Iterator.reduce`
+  - :meth:`Iterator.all`
+  - :meth:`Iterator.sum`
+  - ...
+
+**Consumers / access operators**
+  - :meth:`Iterator.to_list`
+  - :meth:`Iterator.first`
+  - :meth:`Iterator.last`
+  - ...
 """
 
 
 import sys
 import types
+from functools import wraps
 
 # # # to implement:
 
@@ -48,12 +78,16 @@ import types
 # min, max
 # sum
 # product
+
+# first
 # last
 # nth
 # for_each
 # to_list / collect
 # partition
 # find / position'
+
+# TODO: decorator to add new `Iterator` methods from outside the class
 
 
 # predefine to make the typechecker happy
@@ -97,9 +131,34 @@ class Iterator:
         Converts the Iterchain to a list
 
         Returns:
-            :obj:`list`: new list containing all the elements in this Iterchain
+            new list containing all the elements in this Iterchain
         """
         return list(self)
+
+
+def chainable(f):
+    """
+    A decorator that allows you to add your own custom chainable methods.
+
+    The wrapped function should take the an :class:`Iterator` instance as the first argument,
+    and should return an iterable object (does not have to be an :class:`Iterator` instance).
+
+    Example:
+        ::
+
+            >>> @iterchain.chainable
+            >>> def plus(iterable, amount):
+            ...     return iterable.map(lambda x: x + amount)
+            ...
+            >>> iterchain([1, 2, 3]).plus(1).to_list()
+            [2, 3, 4]
+
+    """
+    @wraps(f)
+    def wrapper(self, *args, **kwargs):
+        return Iterator(f(self, *args, **kwargs))
+    setattr(Iterator, f.__name__, wrapper)
+    return f
 
 
 # pylint: disable=too-few-public-methods
@@ -111,7 +170,6 @@ class _IterchainModule(types.ModuleType):
     def __init__(self):
         super().__init__(__name__)
         self.__dict__.update(sys.modules[__name__].__dict__)
-
 
     def __call__(self, iterable):
         return Iterator(iterable)

@@ -1,12 +1,4 @@
 """
-``iterchain`` also provides handy methods that let you build new ``Iterator`` instances from scratch. These are contained in the ``iterchain.generators`` sub-module, but they're also accessible directly from the ``iterchain`` module, which is the preferred way of using them.
-
-For example:
-::
-
-    >>> import iterchain
-    >>> iterchain.count().take(4).map(lambda x: x**2).to_list()
-    [0, 1, 4, 9]
 
 """
 
