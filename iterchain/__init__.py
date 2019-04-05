@@ -45,7 +45,7 @@ Overview
 
 import sys
 import types
-from functools import wraps
+import functools
 
 # # # to implement:
 
@@ -87,13 +87,6 @@ from functools import wraps
 # partition
 # find / position'
 
-# TODO: decorator to add new `Iterator` methods from outside the class
-
-
-# predefine to make the typechecker happy
-class Iterator:
-    pass
-
 
 class Iterator:
     """
@@ -117,48 +110,46 @@ class Iterator:
     def __next__(self):
         return next(self.__iterator)
 
-    def map(self, function) -> Iterator:
-        """
-        Lazily applies a function to all elements.
 
-        Args:
-            function: the function to be called on each element
-        """
-        return Iterator(map(function, self))
-
-    def to_list(self) -> list:
-        """
-        Converts the Iterchain to a list
-
-        Returns:
-            new list containing all the elements in this Iterchain
-        """
-        return list(self)
-
-
-def chainable(f):
+def chainable(func=None, *, returns_iterable=True):
     """
-    A decorator that allows you to add your own custom chainable methods.
+    Decorator that allows you to add your own custom chainable methods.
 
     The wrapped function should take the an :class:`Iterator` instance as the first argument,
     and should return an iterable object (does not have to be an :class:`Iterator` instance).
 
-    Example:
-        ::
+    The original function is not modified and can still be used as normal.
 
-            >>> @iterchain.chainable
-            >>> def plus(iterable, amount):
-            ...     return iterable.map(lambda x: x + amount)
-            ...
-            >>> iterchain([1, 2, 3]).plus(1).to_list()
-            [2, 3, 4]
+    Args:
+        returns_iterable (bool): whether or not the wrapped function returns an iterable
+
+    Example:
+    ::
+
+        >>> @iterchain.chainable
+        >>> def plus(iterable, amount):
+        ...     return iterable.map(lambda x: x + amount)
+        ...
+        >>> iterchain([1, 2, 3]).plus(1).to_list()
+        [2, 3, 4]
 
     """
-    @wraps(f)
-    def wrapper(self, *args, **kwargs):
-        return Iterator(f(self, *args, **kwargs))
-    setattr(Iterator, f.__name__, wrapper)
-    return f
+    def _chainable(func):
+        @functools.wraps(func)
+        def wrapper(self, *args, **kwargs):
+            if returns_iterable:
+                return Iterator(func(self, *args, **kwargs))
+            else:
+                return func(self, *args, **kwargs)
+
+        setattr(Iterator, func.__name__, wrapper)
+        return func
+
+    # to allow the decorator to be used with and without arguments
+    if func is None:
+        return _chainable
+    else:
+        return _chainable(func)
 
 
 # pylint: disable=too-few-public-methods
@@ -177,6 +168,8 @@ class _IterchainModule(types.ModuleType):
 
 # import at the end to avoid cyclic imports
 from .generators import *
+from .reductions import *
+from .processing import *
 
 # and change this module to our patched version
 sys.modules[__name__] = _IterchainModule()
