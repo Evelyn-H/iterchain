@@ -168,8 +168,7 @@ class _IterchainModule(types.ModuleType):
 
 # import at the end to avoid cyclic imports
 from .generators import *
-from .reductions import *
-from .processing import *
+from .methods import *
 
 # and change this module to our patched version
 sys.modules[__name__] = _IterchainModule()

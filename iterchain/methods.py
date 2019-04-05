@@ -1,6 +1,17 @@
+import builtins
 import functools
+from . import chainable, Iterator
 
-from . import chainable
+
+@chainable
+def map(iterable, function) -> Iterator:
+    """
+    Applies a given function to all elements.
+
+    Args:
+        function: the function to be called on each element
+    """
+    return builtins.map(function, iterable)
 
 
 @chainable(returns_iterable=False)
