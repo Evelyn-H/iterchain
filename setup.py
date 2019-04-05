@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setup(
     name='iterchain',
-    version='0.1.2',
-    description='Iterator chaining for Python',
+    version='0.1.3',
+    description='Simple and ergonomic iterator chaining for Python',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://iterchain.readthedocs.io/en/stable/',
