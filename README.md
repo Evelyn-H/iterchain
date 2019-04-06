@@ -6,6 +6,18 @@ Iterchain: Iterator chaining for Python
 Iterchain is a library intended to make manipulating iterators in Python easier and more ergonomic.
 The design is heavily inspired by the [Rust iterator design](https://doc.rust-lang.org/std/iter/index.html), and a lot of the functionality comes from the standard Python [itertools](https://docs.python.org/3/library/itertools.html) library.
 
+## Installation
+
+Make sure that you have `pip` installed and run:
+```
+pip install iterchain
+```
+
+For the development version:
+```
+git clone https://github.com/Evelyn-H/iterchain.git
+pip install -e iterchain
+```
 
 ## Why would I need this?
 
