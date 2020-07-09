@@ -2,10 +2,10 @@
 
 """
 
-from . import Iterator
+from . import core
 
 
-def count(start=0, stop=None, step=1) -> Iterator:
+def count(start=0, stop=None, step=1) -> core.Iterator:
     """
     Makes a new iterator that returns evenly spaced values. (similar to the ``range`` builtin)
 
@@ -20,4 +20,4 @@ def count(start=0, stop=None, step=1) -> Iterator:
             yield counter
             counter += step
 
-    return Iterator(_count(start, stop, step))
+    return core.Iterator(_count(start, stop, step))

@@ -1,11 +1,12 @@
 import iterchain
+from iterchain import iter # pylint: disable=redefined-builtin
 
 
 def test():
     l = [1, 2, 3]
-    new_l = (iterchain(l)
-        .map(lambda x: x**2)
-        .to_list())
+    new_l = (iter(l)
+             .map(lambda x: x**2)
+             .to_list())
 
     assert new_l == [1, 4, 9]
 

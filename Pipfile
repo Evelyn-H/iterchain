@@ -1,16 +1,11 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
 
-
-
 [dev-packages]
-
 pytest = "*"
 pylint = "*"
 twine = "*"
@@ -18,8 +13,7 @@ sphinx = "*"
 "m2r" = "*"
 recommonmark = "*"
 alabaster = "*"
-
+pathlib2 = "*"
 
 [requires]
-
 python_version = "3.5"
