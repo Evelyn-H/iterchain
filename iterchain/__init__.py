@@ -42,8 +42,5 @@ Overview
   - ...
 """
 
-# simplify publin interface
-# pylint: disable=redefined-builtin
-from .core import Iterator, iter, chainable
-from .generators import *
-from .methods import *
+# simplify public interface
+from .core import Iterator, chainable

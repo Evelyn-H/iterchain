@@ -43,36 +43,6 @@ import builtins
 # partition
 # find / position'
 
-
-class Iterator:
-    """
-    Wrapper class around python iterators
-
-    After wrapping any iterable in this class it will have access to all the methods listed below.
-    These methods also return an `Iterator` instance to make them chainable.
-
-    ``<3``
-    """
-
-    def __init__(self, iterable):
-        try:
-            self.__iterator = builtins.iter(iterable)
-        except TypeError:
-            raise ValueError("You must pass a valid iterable object")
-
-    def __iter__(self):
-        return self.__iterator
-
-    def __next__(self):
-        return next(self.__iterator)
-
-
-# simple wrapper function around the Iterator constructor to mimic the builtins.iter behaviour.
-# TODO: duplicate the `sentinel` behaviour of the builtin
-def iter(iterable): # pylint: disable=redefined-builtin
-    return Iterator(iterable)
-
-
 def chainable(func=None, *, returns_iterable=True):
     """
     Decorator that allows you to add your own custom chainable methods.
@@ -99,9 +69,10 @@ def chainable(func=None, *, returns_iterable=True):
     def _chainable(func):
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
-            if returns_iterable:
-                return Iterator(func(self, *args, **kwargs))
-            return func(self, *args, **kwargs)
+            result = func(self, *args, **kwargs)
+            if returns_iterable and not isinstance(result, Iterator):
+                return Iterator(result)
+            return result
 
         if hasattr(Iterator, func.__name__):
             raise AttributeError("Chainable method {} already exists.".format(func.__name__))
@@ -114,17 +85,88 @@ def chainable(func=None, *, returns_iterable=True):
     return _chainable(func)
 
 
-# class _IterchainModule(types.ModuleType):
-#     """
-#     Black magic to make the ``iterchain`` module callable.
-#     """
+# simple QoL decorator to avoid repeated code.
+# all it does is wrap the return value into an Iterator instance if it isn't one already
+def _returns_iterator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        if not isinstance(result, Iterator):
+            return Iterator(result)
+        return result
+    return wrapper
 
-#     def __init__(self):
-#         super().__init__(__name__)
-#         self.__dict__.update(sys.modules[__name__].__dict__)
 
-#     def __call__(self, iterable):
-#         return Iterator(iterable)
+class Iterator():
+    """
+    Wrapper class around python iterators
 
-# and change this module to our patched version
-# sys.modules[__name__] = _IterchainModule()
+    After wrapping any iterable in this class it will have access to all the methods listed below.
+    These methods also return an `Iterator` instance to make them chainable.
+
+    ``<3``
+    """
+
+    # ==== BASICS ====
+
+    # TODO: duplicate the `sentinel` behaviour of the builtin
+    # (don't actually have to program it, just copy the args to builtins.iter(...))
+    def __init__(self, iterable):
+        try:
+            self._iterator = builtins.iter(iterable)
+        except TypeError:
+            raise ValueError("You must pass a valid iterable object")
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return next(self._iterator)
+
+    # ==== TRANSFORMATIONS (Iterator -> Iterator) ====
+
+    @_returns_iterator
+    def map(self, function) -> 'Iterator':
+        """
+        Applies a given function to all elements.
+
+        Args:
+            function: the function to be called on each element
+        """
+        return builtins.map(function, self)
+
+
+    # ==== TERMINATORS (Iterator -> object) ====
+
+    def reduce(self, initial, function):
+        return functools.reduce(function, self, initial)
+
+    def to_list(self) -> list:
+        """
+        Converts the Iterchain to a list
+
+        Returns:
+            new list containing all the elements in this Iterchain
+        """
+        return list(self)
+
+
+    # ==== Generators (new Iterator) ====
+
+    @classmethod
+    def count(cls, start=0, stop=None, step=1) -> 'Iterator':
+        """
+        Makes a new iterator that returns evenly spaced values. (similar to the ``range`` builtin)
+
+        ...
+        """
+        assert step != 0
+        assert stop is None or (step > 0 and stop >= start) or (step < 0 and stop <= start)
+
+        def _count(start, stop, step):
+            counter = start
+            while (stop is None) or (step > 0 and counter < stop) or (step < 0 and counter > stop):
+                yield counter
+                counter += step
+
+        return Iterator(_count(start, stop, step))

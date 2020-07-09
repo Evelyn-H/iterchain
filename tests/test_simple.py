@@ -1,5 +1,4 @@
-import iterchain
-from iterchain import iter # pylint: disable=redefined-builtin
+from iterchain.core import Iterator as iter # pylint: disable=redefined-builtin
 
 
 def test():
@@ -10,4 +9,4 @@ def test():
 
     assert new_l == [1, 4, 9]
 
-    assert iterchain.count(start=2, step=-1, stop=-2).to_list() == [2, 1, 0, -1]
+    assert iter.count(start=2, step=-1, stop=-2).to_list() == [2, 1, 0, -1]
