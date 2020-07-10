@@ -44,3 +44,4 @@ Overview
 
 # simplify public interface
 from .core import Iterator, chainable
+iter = Iterator # cause overriding builtins is what the cool kids do
