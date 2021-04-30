@@ -9,4 +9,4 @@ def test():
 
     assert new_l == [1, 4, 9]
 
-    assert iter.count(start=2, step=-1, stop=-2).to_list() == [2, 1, 0, -1]
+    assert iter.range(2, -2, -1).to_list() == [2, 1, 0, -1]

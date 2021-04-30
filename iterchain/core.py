@@ -224,9 +224,11 @@ class Iterator():
             return constructor(self)
         else:
             # just use up the iterator but don't do anything with it
-            # could be useful if you somehow have side effects you wanna execute but don't need the results
+            # could be useful if you somehow have side effects
+            # you wanna execute but don't need the results
             for _ in self:
                 pass
+            return None
 
     def to_list(self) -> list:
         """
@@ -245,13 +247,12 @@ class Iterator():
     # zip (normal, strict, longest) / unzip
 
     @classmethod
-    def range(cls, *args, **kwargs) -> 'Iterator':
+    def range(cls, *args) -> 'Iterator':
         """
-        Makes a new iterator that returns evenly spaced values. (similar to the ``range`` builtin)
-
-        ...
+        Makes a new iterator that returns evenly spaced values. 
+        (similar to the ``range`` builtin)
         """
-        return Iterator(range(*args, **kwargs))
+        return Iterator(range(*args))
 
     @classmethod
     def count(cls, start=0, step=1) -> 'Iterator':
